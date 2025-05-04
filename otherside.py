@@ -12,16 +12,16 @@ try:
     parts = location.split(",")
     st.session_state.latitud = float(parts[0].split(":")[1].strip())
     st.session_state.longitud = float(parts[1].split(":")[1].strip())
-except ValueError:
+    if st.session_state.latitud and st.session_state.longitud:
+        try:
+            latitud = float(st.session_state.latitud)
+            longitud = float(st.session_state.longitud)
+            latitud = latitud * -1
+            longitud = (longitud + 180) if longitud < 0 else (longitud - 180)
+            st.write("Your otherside is:", latitud, longitud)
+            st.link_button("Go to maps", f"https://www.google.com/maps/search/?api=1&query={latitud},{longitud}")
+        except ValueError:
+            st.error("Location not found")
+    1/0
+except Exception as e:
     st.error("")
-
-if st.session_state.latitud and st.session_state.longitud:
-    try:
-        latitud = float(st.session_state.latitud)
-        longitud = float(st.session_state.longitud)
-        latitud = latitud * -1
-        longitud = (longitud + 180) if longitud < 0 else (longitud - 180)
-        st.write("Your otherside is:", latitud, longitud)
-        st.link_button("Go to maps", f"https://www.google.com/maps/search/?api=1&query={latitud},{longitud}")
-    except ValueError:
-        st.error("Location not found")
